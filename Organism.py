@@ -1,26 +1,13 @@
 import time
 from random import *
-from tkinter import *
 from math import *
 
-screensize_x = 1000
-screensize_y = 700
-canvasWidth = 1000
-canvasHeight = 700
+screensize_x = 10000
+screensize_y = 10000
+canvasWidth = 10000
+canvasHeight = 10000
 
-root=Tk()
-frame=Frame(root,width=screensize_x,height=screensize_y)
-frame.grid(row=0,column=0)
-canvas=Canvas(frame,bg='#FFFFFF',width=screensize_x,height=screensize_y,scrollregion=(0,0,canvasWidth,canvasHeight))
-hbar=Scrollbar(frame,orient=HORIZONTAL)
-hbar.pack(side=BOTTOM,fill=X)
-hbar.config(command=canvas.xview)
-vbar=Scrollbar(frame,orient=VERTICAL)
-vbar.pack(side=RIGHT,fill=Y)
-vbar.config(command=canvas.yview)
-canvas.config(width=screensize_x,height=screensize_y)
-canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
-canvas.pack(side=LEFT,expand=True,fill=BOTH)
+initialOrganisms = 100
 
 
 sick = 1
@@ -32,7 +19,7 @@ color = '#%02x%02x%02x' % (128, 128, 128)
 
 alive_organisms = 0
 bob = 0
-for fun in range(0,50):
+for fun in range(0,initialOrganisms):
    startX = randint(0,canvasWidth)
    startY = randint(0,canvasHeight)
    x = startX
@@ -77,16 +64,10 @@ for fun in range(0,50):
    family = '#%02x%02x%02x' % (OrganismList[fun][5], OrganismList[fun][6], OrganismList[fun][7])
    #print(family)
 
-   canvas.pack()
-   Living_Organism[alive_organisms][14] = canvas.create_oval(0, 0, 10, 10, fill= family)
-   canvas.move(Living_Organism[alive_organisms][14], x, y)
    #canvas.create_oval(x, y, 10, 10, fill= family)
    bob = bob + 1
    alive_organisms = alive_organisms + 1
 currentOrganism = 0
-#print('_______________________________________')
-#for row in OrganismList:
-   #print(row)
 
 
 
@@ -129,10 +110,6 @@ def Generation(currentOrganism):
    return attributes
 
 
-def updateXYorganism(currentOrganism):
-   coordinate = canvas.coords(Living_Organism[currentOrganism][14])
-   Living_Organism[currentOrganism][3] = coordinate[0]
-   Living_Organism[currentOrganism][4] = coordinate[1]
 def moveOrganism(currentOrganism):
    coordinate = [Living_Organism[currentOrganism][3],Living_Organism[currentOrganism][4]]
    travel = Living_Organism[currentOrganism][7]
@@ -155,7 +132,7 @@ def birth(currentOrganism):
    global bob, OrganismList, alive_organisms, Living_Organism
    if Living_Organism[currentOrganism][9] == Living_Organism[currentOrganism][1]:
        attributes = Generation(currentOrganism)
-       coordinate = canvas.coords(Living_Organism[currentOrganism][14])
+       coordinate = [Living_Organism[currentOrganism][3],Living_Organism[currentOrganism][4]]
        buddy = []
        tribal = attributes[0]
        br = attributes[1]
@@ -195,11 +172,6 @@ def birth(currentOrganism):
        Living_Organism.append(buddy)
        alive_organisms = alive_organisms + 1
        family = '#%02x%02x%02x' % (OrganismList[bob][5], OrganismList[bob][6], OrganismList[bob][7])
-       #print(family)
-       canvas.pack()
-       Living_Organism[alive_organisms - 1][14] = canvas.create_oval(0, 0, 10, 10, fill= family)
-       canvas.move(Living_Organism[alive_organisms - 1][14], coordinate[0], coordinate[1])
-       #canvas.create_oval(x, y, 10, 10, fill= family)
        bob = bob + 1
        Living_Organism[currentOrganism][9] = (510 - Living_Organism[currentOrganism][6]) + Living_Organism[currentOrganism][1]
        Living_Organism[currentOrganism][8] = True
@@ -245,16 +217,18 @@ def Disease(severity,mortality,Contagious):
             Living_Organism[Neighbors[WillIDie]][2] = Living_Organism[Neighbors[WillIDie]][2] - mortality
             if Living_Organism[Neighbors[WillIDie]][2] <= 0:
                 Living_Organism[Neighbors[WillIDie]][13] = False
-                canvas.delete(Living_Organism[Neighbors[WillIDie]][14])
                 Casualties = Casualties + 1
     print('to bad')
     return Casualties
 
 
+filename = ("D:\DavidsProjects\Python\Organism\Output\output_.txt")
+File1 = open(filename,'w')
+
 cycle = 0
 cycleNumber = int(input('How many cycles do you want between updates: '))
 cycles = 0
-
+filename = ''
 while 1 == 1:
     sickness = randint(0,1000)
    
@@ -263,8 +237,6 @@ while 1 == 1:
        severity = randint(1,5)
        Contagious = (randint(1,20) * randint(1,20)) ** 2
        Casualties = Disease(severity,mortality,Contagious)
-       #winsound.Beep(1000,500)
-       #winsound.Beep(Casualties*2 + 1000,500)
        print('_____________________________________________________')
        print('')
        print('Health subtracted: ', mortality)
@@ -272,7 +244,6 @@ while 1 == 1:
        print('Amount dead: ', Casualties)
        print('')
        print('_____________________________________________________')
-    #for rowNumber, rowList in enumerate(Living_Organism):
     for rowNumber in range(0,alive_organisms):
        currentOrganism = rowNumber
        if Living_Organism[currentOrganism][13] == True:
@@ -281,23 +252,21 @@ while 1 == 1:
                moveOrganism(currentOrganism)
            Living_Organism[currentOrganism][1] = Living_Organism[currentOrganism][1] + 1
            DEATH(currentOrganism,canvasWidth,canvasHeight,alive_organisms)
-       #window.update()
-       #print(OrganismList)
-       #print(OrganismList[currentOrganism][1])
-    #for rowNumber, rowList in enumerate(Living_Organism):
     if cycle == cycleNumber:
         print(cycles,' : ',alive_organisms)
         cycle = 0
+        SendList = []
         for rowNumber in range(0,alive_organisms):
             if Living_Organism[rowNumber][13] == True:
-                canvas.moveto(Living_Organism[rowNumber][14],Living_Organism[rowNumber][3],Living_Organism[rowNumber][4])
-        root.update()
+                SendList.append([Living_Organism[rowNumber][0],Living_Organism[rowNumber][3],Living_Organism[rowNumber][4],Living_Organism[rowNumber][5],Living_Organism[rowNumber][6],Living_Organism[rowNumber][7]])
+        File1.seek(0)
+        File1.write(str(SendList))
+        File1.truncate()
     cycle += 1
     cycles+=1
     currentOrganism = alive_organisms - 1
     while currentOrganism != -1:
        if Living_Organism[currentOrganism][13] == False:
-           canvas.delete(Living_Organism[currentOrganism][14])
            Living_Organism[currentOrganism] = Living_Organism[alive_organisms - 1]
            Living_Organism.pop()
            alive_organisms = alive_organisms - 1
@@ -307,4 +276,4 @@ while 1 == 1:
 print('________________________________________________')
 for row in OrganismList:
    print(row)
-root.mainloop()
+
