@@ -1,5 +1,4 @@
 import time
-import winsound
 from random import *
 from tkinter import *
 from math import *
@@ -250,16 +249,6 @@ def Disease(severity,mortality,Contagious):
                 Casualties = Casualties + 1
     print('to bad')
     return Casualties
-
-'''
-
-   if sick == 0:
-       Living_Organism[currentOrganism][13] = False
-       canvas.delete(Living_Organism[currentOrganism][14])
-       #canvas.move(Living_Organism[currentOrganism][14], -Living_Organism[currentOrganism][3], -Living_Organism[currentOrganism][4])
-       #print(OrganismList[currentOrganism])
-   sick = 1
-'''
 
 
 cycle = 0
