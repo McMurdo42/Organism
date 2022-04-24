@@ -75,18 +75,14 @@ for fun in range(0,50):
    OrganismList.append(buddy)
    Living_Organism.append(buddy)
    family = '#%02x%02x%02x' % (OrganismList[fun][5], OrganismList[fun][6], OrganismList[fun][7])
-   #print(family)
 
    canvas.pack()
    Living_Organism[alive_organisms][14] = canvas.create_oval(0, 0, 10, 10, fill= family)
    canvas.move(Living_Organism[alive_organisms][14], x, y)
-   #canvas.create_oval(x, y, 10, 10, fill= family)
    bob = bob + 1
    alive_organisms = alive_organisms + 1
 currentOrganism = 0
-#print('_______________________________________')
-#for row in OrganismList:
-   #print(row)
+
 
 
 
@@ -102,30 +98,21 @@ def mutate_ammount():
    change = change - 0.5
    change = change * 2
    return change
-   #print(change)
 def mutate_number(change, number):
-   #print(change)
-   #print(number)
    if change < 0:
        number = (number * change) + number
    else:
        number = (255 - number) * change + number
-   #print(number)
    number = round(number)
-   #print(number)
    return number
 def Generation(currentOrganism):
    global number
    attributes = []
    for column in range(0,3):
-       #global
        change = mutate_ammount()
-       #print(change)
        number = Living_Organism[currentOrganism][column + 5]
-       #print(number)
        number = mutate_number(change, number)
        attributes.append(number)
-       #print('____________________')
    return attributes
 
 
@@ -190,16 +177,13 @@ def birth(currentOrganism):
        buddy.append(True)
        # TkinterID           14
        buddy.append(bob+1)
-       #print(buddy)
        OrganismList.append(buddy)
        Living_Organism.append(buddy)
        alive_organisms = alive_organisms + 1
        family = '#%02x%02x%02x' % (OrganismList[bob][5], OrganismList[bob][6], OrganismList[bob][7])
-       #print(family)
        canvas.pack()
        Living_Organism[alive_organisms - 1][14] = canvas.create_oval(0, 0, 10, 10, fill= family)
        canvas.move(Living_Organism[alive_organisms - 1][14], coordinate[0], coordinate[1])
-       #canvas.create_oval(x, y, 10, 10, fill= family)
        bob = bob + 1
        Living_Organism[currentOrganism][9] = (510 - Living_Organism[currentOrganism][6]) + Living_Organism[currentOrganism][1]
        Living_Organism[currentOrganism][8] = True
@@ -237,10 +221,9 @@ def Disease(severity,mortality,Contagious):
         Neighbors = []
         for organism, rowList in enumerate(Living_Organism):
             if (Living_Organism[organism][3] - Living_Organism[currentOrganism][3]) * (Living_Organism[organism][3] - Living_Organism[currentOrganism][3]) + (Living_Organism[organism][4] - Living_Organism[currentOrganism][4]) * (Living_Organism[organism][4] - Living_Organism[currentOrganism][4]) <= Contagious:
-            #if Living_Organism[organism][3] < Living_Organism[currentOrganism][3] + 125 and Living_Organism[organism][3] > Living_Organism[currentOrganism][3] - 125 and Living_Organism[organism][4] < Living_Organism[currentOrganism][4] + 125 and Living_Organism[organism][4] > Living_Organism[currentOrganism][4] - 125:
                 Neighbors.append(organism)
                 density = density + 1
-        #print(Neighbors)
+
         for WillIDie, rowList in enumerate(Neighbors):
             Living_Organism[Neighbors[WillIDie]][2] = Living_Organism[Neighbors[WillIDie]][2] - mortality
             if Living_Organism[Neighbors[WillIDie]][2] <= 0:
@@ -263,8 +246,6 @@ while 1 == 1:
        severity = randint(1,5)
        Contagious = (randint(1,20) * randint(1,20)) ** 2
        Casualties = Disease(severity,mortality,Contagious)
-       #winsound.Beep(1000,500)
-       #winsound.Beep(Casualties*2 + 1000,500)
        print('_____________________________________________________')
        print('')
        print('Health subtracted: ', mortality)
@@ -272,7 +253,6 @@ while 1 == 1:
        print('Amount dead: ', Casualties)
        print('')
        print('_____________________________________________________')
-    #for rowNumber, rowList in enumerate(Living_Organism):
     for rowNumber in range(0,alive_organisms):
        currentOrganism = rowNumber
        if Living_Organism[currentOrganism][13] == True:
@@ -281,10 +261,6 @@ while 1 == 1:
                moveOrganism(currentOrganism)
            Living_Organism[currentOrganism][1] = Living_Organism[currentOrganism][1] + 1
            DEATH(currentOrganism,canvasWidth,canvasHeight,alive_organisms)
-       #window.update()
-       #print(OrganismList)
-       #print(OrganismList[currentOrganism][1])
-    #for rowNumber, rowList in enumerate(Living_Organism):
     if cycle == cycleNumber:
         print(cycles,' : ',alive_organisms)
         cycle = 0
