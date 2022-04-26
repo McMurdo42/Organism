@@ -94,25 +94,22 @@ def mutate_ammount():
    while amount != 0:
        change = change + randint(0,100)
        amount = amount - 1
-   change = change / 10000
-   change = change - 0.5
-   change = change * 2
+   change = ((change / 10000) - 0.5) * 2
    return change
 def mutate_number(change, number):
-   if change < 0:
-       number = (number * change) + number
-   else:
-       number = (255 - number) * change + number
-   number = round(number)
-   return number
+    number = (number * change) + number
+    number = round(number)
+    if number > 255:
+        number = 255
+    elif number < 0:
+        number = 0
+    return number
 def Generation(currentOrganism):
-   global number
    attributes = []
    for column in range(0,3):
        change = mutate_ammount()
        number = Living_Organism[currentOrganism][column + 5]
-       number = mutate_number(change, number)
-       attributes.append(number)
+       attributes.append(mutate_number(change,number))
    return attributes
 
 
