@@ -196,9 +196,8 @@ def birth(currentOrganism):
 
 
 
-def DEATH(currentOrganism,canvasWidth,canvasHeight,alive_organisms):
+def DEATH(currentOrganism,canvasWidth,canvasHeight,popdensityeffect):
    global sickness, sick
-   popdensityeffect = (-0.5 * (((2 ** (0.01 * (alive_organisms - 3000))) - 1) / ((2 ** (0.01 * (alive_organisms - 3000))) + 1))) + 0.5
    lifechance = round(1500 * popdensityeffect * (275 / (Living_Organism[currentOrganism][5] + Living_Organism[currentOrganism][6] + Living_Organism[currentOrganism][7])))
    dead = randint(0,lifechance)
    sick = 1
@@ -240,7 +239,7 @@ cycles = 0
 
 while 1 == 1:
     sickness = randint(0,1000)
-   
+    popdensityeffect = (-0.5 * (((2 ** (0.01 * (alive_organisms - 3000))) - 1) / ((2 ** (0.01 * (alive_organisms - 3000))) + 1))) + 0.5
     if sickness == 0:
        mortality = randint(1,10) * randint(1,10)
        severity = randint(1,5)
@@ -260,7 +259,7 @@ while 1 == 1:
            if Living_Organism[currentOrganism][8] == False:
                moveOrganism(currentOrganism)
            Living_Organism[currentOrganism][1] = Living_Organism[currentOrganism][1] + 1
-           DEATH(currentOrganism,canvasWidth,canvasHeight,alive_organisms)
+           DEATH(currentOrganism,canvasWidth,canvasHeight,popdensityeffect)
     if cycle == cycleNumber:
         print(cycles,' : ',alive_organisms)
         cycle = 0
