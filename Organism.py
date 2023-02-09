@@ -205,7 +205,7 @@ def Disease(severity,mortality,Contagious):
     return Casualties
 
 
-filename = ("D:\DavidsProjects\Python\Organism\Output\output_.txt")
+filename = ("data.txt")
 File1 = open(filename,'w')
 
 cycle = 0
@@ -220,6 +220,7 @@ while 1 == 1:
        severity = randint(1,5)
        Contagious = (randint(1,20) * randint(1,20)) ** 2
        Casualties = Disease(severity,mortality,Contagious)
+'''
        print('_____________________________________________________')
        print('')
        print('Health subtracted: ', mortality)
@@ -227,6 +228,7 @@ while 1 == 1:
        print('Amount dead: ', Casualties)
        print('')
        print('_____________________________________________________')
+'''
     for rowNumber in range(0,alive_organisms):
        currentOrganism = rowNumber
        if Living_Organism[currentOrganism][13] == True:
@@ -239,11 +241,19 @@ while 1 == 1:
         print(cycles,' : ',alive_organisms)
         cycle = 0
         SendList = []
+        File1.seek(0)
         for rowNumber in range(0,alive_organisms):
             if Living_Organism[rowNumber][13] == True:
-                SendList.append([Living_Organism[rowNumber][0],Living_Organism[rowNumber][3],Living_Organism[rowNumber][4],Living_Organism[rowNumber][5],Living_Organism[rowNumber][6],Living_Organism[rowNumber][7]])
-        File1.seek(0)
-        File1.write(str(SendList))
+                File1.write(str(Living_Organism[rowNumber][3]))
+                File1.write(str(','))
+                File1.write(str(Living_Organism[rowNumber][4]))
+                File1.write(str(','))
+                File1.write(str(Living_Organism[rowNumber][5]))
+                File1.write(str(','))
+                File1.write(str(Living_Organism[rowNumber][6]))
+                File1.write(str(','))
+                File1.write(str(Living_Organism[rowNumber][7]))
+                File1.write('\n')
         File1.truncate()
     cycle += 1
     cycles+=1
