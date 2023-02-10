@@ -172,7 +172,10 @@ def birth(currentOrganism):
 def DEATH(currentOrganism,canvasWidth,canvasHeight,alive_organisms):
    global sickness, sick
    popdensityeffect = (-0.5 * (((2 ** (0.01 * (alive_organisms - 3000))) - 1) / ((2 ** (0.01 * (alive_organisms - 3000))) + 1))) + 0.5
-   lifechance = round(1500 * popdensityeffect * (275 / (Living_Organism[currentOrganism][5] + Living_Organism[currentOrganism][6] + Living_Organism[currentOrganism][7])))
+   if (Living_Organism[currentOrganism][5] + Living_Organism[currentOrganism][6] + Living_Organism[currentOrganism][7]) > 0:
+       lifechance = round(1500 * popdensityeffect * (275 / (Living_Organism[currentOrganism][5] + Living_Organism[currentOrganism][6] + Living_Organism[currentOrganism][7])))
+   else:
+        lifechance = 750
    dead = randint(0,lifechance)
    sick = 1
    if dead == 0:
@@ -220,15 +223,6 @@ while 1 == 1:
        severity = randint(1,5)
        Contagious = (randint(1,20) * randint(1,20)) ** 2
        Casualties = Disease(severity,mortality,Contagious)
-'''
-       print('_____________________________________________________')
-       print('')
-       print('Health subtracted: ', mortality)
-       print('Effect radius: ', sqrt(Contagious))
-       print('Amount dead: ', Casualties)
-       print('')
-       print('_____________________________________________________')
-'''
     for rowNumber in range(0,alive_organisms):
        currentOrganism = rowNumber
        if Living_Organism[currentOrganism][13] == True:
