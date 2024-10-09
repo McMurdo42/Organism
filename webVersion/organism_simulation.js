@@ -33,10 +33,10 @@ let cycleCounter = 0;
 
 // Disease parameters
 let diseaseTriggered = false;
-let diseaseInterval = 1000; // How often to check for disease (in cycles)
-let diseaseChance = 0.05;   // 5% chance per cycle to trigger a disease
+let diseaseInterval = 500; // How often to check for disease (in cycles)
+let diseaseChance = 0.5;   // 5% chance per cycle to trigger a disease
 let lastDiseaseCycle = 0;
-let diseaseRadius = 100;    // How far the disease spreads from the original infected organism
+let diseaseRadius = 500;    // How far the disease spreads from the original infected organism
 
 // Utility function to generate color based on traits
 function traitBasedColor(tribe, birthRate, mobility) {
@@ -162,12 +162,10 @@ class Organism {
     // Function to handle tribe-based survival with family protection
     fight(other) {
         if (this.distanceTo(other) <= organismSize * organismSize) {  // Check if they are touching
-            if (this.familyID !== other.familyID) {  // Ensure they are not family
-                if (this.tribe > other.tribe) {
-                    other.alive = false;  // The one with the lower tribe value dies
-                } else if (this.tribe < other.tribe) {
-                    this.alive = false;  // If the other organism has a higher tribe, this one dies
-                }
+            if ((this.tribe - other.tribe) * (this.tribe - other.tribe) > 75 && this.tribe > other.tribe && this.tribe > 150) {
+                other.alive = false;  // The one with the lower tribe value dies
+            } else if ((this.tribe - other.tribe) * (this.tribe - other.tribe) > 75 && this.tribe < other.tribe && this.tribe > 150) {
+                this.alive = false;  // If the other organism has a higher tribe, this one dies
             }
         }
     }
@@ -192,7 +190,7 @@ function showDiseaseNotification() {
 function triggerDiseaseInDenseAreas() {
     const infectedIndex = Math.floor(Math.random() * organisms.length);
     const infectedOrganism = organisms[infectedIndex]; // Start infection with a random organism
-    const severity = Math.random() * 1300;  // How much health to reduce
+    const severity = Math.random() * 13000;  // How much health to reduce
 
     organisms.forEach(organism => {
         const distance = infectedOrganism.distanceTo(organism);
